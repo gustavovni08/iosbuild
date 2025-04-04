@@ -1,0 +1,73 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [main]  # Aciona o build na branch "main"
+  workflow_dispatch:  # Permite acionar manualmente
+
+jobs:
+  build-ios:
+    runs-on: macOS-latest  # Usa um runner macOS
+    timeout-minutes: 30    # Ajuste conforme necessário
+
+    steps:
+      # Passo 1: Baixar o código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Passo 2: Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Use a versão do seu projeto
+
+      # Passo 3: Instalar dependências do projeto
+      - name: Install npm dependencies
+        run: npm ci  # Usa o package-lock.json para instalação exata
+
+      # Passo 4: Configurar Ruby e CocoaPods
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.2  # Versão compatível com seu projeto
+
+      - name: Install CocoaPods
+        run: sudo gem install cocoapods
+
+      # Passo 5: Instalar dependências do iOS (pods)
+      - name: Install iOS pods
+        working-directory: ios
+        run: pod install
+
+      # Passo 6: Compilar o projeto iOS
+      - name: Build iOS app
+        working-directory: ios
+        run: |
+          xcodebuild build \
+          -workspace acessoON.xcworkspace \
+          -scheme acessoON \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest'
+
+      # # Passo 7 (Opcional): Gerar arquivo .ipa para distribuição
+      # - name: Archive for distribution
+      #   working-directory: ios
+      #   run: |
+      #     xcodebuild archive \
+      #     -workspace acessoON.xcworkspace \
+      #     -scheme acessoON \
+      #     -configuration Release \
+      #     -archivePath $PWD/build/acessoON.xcarchive
+
+      #     xcodebuild -exportArchive \
+      #     -archivePath $PWD/build/acessoON.xcarchive \
+      #     -exportOptionsPlist ExportOptions.plist \
+      #     -exportPath $PWD/build
+
+      # # Passo 8 (Opcional): Fazer upload do .ipa como artefato
+      # - name: Upload IPA
+      #   uses: actions/upload-artifact@v3
+      #   if: success()
+      #   with:
+      #     name: acessoON-iOS
+      #     path: ios/build/acessoON.ipa

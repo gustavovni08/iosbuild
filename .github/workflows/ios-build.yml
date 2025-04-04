@@ -44,8 +44,8 @@ jobs:
         working-directory: ios
         run: |
           xcodebuild build \
-          -workspace acessoON.xcworkspace \
-          -scheme acessoON \
+          -workspace acessoOn.xcworkspace \
+          -scheme acessoOn \
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest'
 
@@ -54,13 +54,13 @@ jobs:
       #   working-directory: ios
       #   run: |
       #     xcodebuild archive \
-      #     -workspace acessoON.xcworkspace \
-      #     -scheme acessoON \
+      #     -workspace acessoOn.xcworkspace \
+      #     -scheme acessoOn \
       #     -configuration Release \
-      #     -archivePath $PWD/build/acessoON.xcarchive
+      #     -archivePath $PWD/build/acessoOn.xcarchive
 
       #     xcodebuild -exportArchive \
-      #     -archivePath $PWD/build/acessoON.xcarchive \
+      #     -archivePath $PWD/build/acessoOn.xcarchive \
       #     -exportOptionsPlist ExportOptions.plist \
       #     -exportPath $PWD/build
 
@@ -69,5 +69,5 @@ jobs:
       #   uses: actions/upload-artifact@v3
       #   if: success()
       #   with:
-      #     name: acessoON-iOS
-      #     path: ios/build/acessoON.ipa
+      #     name: acessoOn-iOS
+      #     path: ios/build/acessoOn.ipa

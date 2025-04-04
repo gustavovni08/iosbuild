@@ -49,25 +49,25 @@ jobs:
           -sdk iphonesimulator \
           -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest'
 
-      # # Passo 7 (Opcional): Gerar arquivo .ipa para distribuição
-      # - name: Archive for distribution
-      #   working-directory: ios
-      #   run: |
-      #     xcodebuild archive \
-      #     -workspace acessoOn.xcworkspace \
-      #     -scheme acessoOn \
-      #     -configuration Release \
-      #     -archivePath $PWD/build/acessoOn.xcarchive
+      # Passo 7 (Opcional): Gerar arquivo .ipa para distribuição
+      - name: Archive for distribution
+        working-directory: ios
+        run: |
+          xcodebuild archive \
+          -workspace acessoOn.xcworkspace \
+          -scheme acessoOn \
+          -configuration Release \
+          -archivePath $PWD/build/acessoOn.xcarchive
 
-      #     xcodebuild -exportArchive \
-      #     -archivePath $PWD/build/acessoOn.xcarchive \
-      #     -exportOptionsPlist ExportOptions.plist \
-      #     -exportPath $PWD/build
+          xcodebuild -exportArchive \
+          -archivePath $PWD/build/acessoOn.xcarchive \
+          -exportOptionsPlist ExportOptions.plist \
+          -exportPath $PWD/build
 
-      # # Passo 8 (Opcional): Fazer upload do .ipa como artefato
-      # - name: Upload IPA
-      #   uses: actions/upload-artifact@v3
-      #   if: success()
-      #   with:
-      #     name: acessoOn-iOS
-      #     path: ios/build/acessoOn.ipa
+      # Passo 8 (Opcional): Fazer upload do .ipa como artefato
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: acessoOn-iOS
+          path: ios/build/acessoOn.ipa
